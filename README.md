@@ -11,11 +11,20 @@ django-building
 ### 功能介绍
 一. model序列化
 ----------
-model_serializer(cls, choices=True, contains=(), excepts=('updated', 'deleted')) <br>
+```
+model_serializer(cls, choices=True, contains=(), excepts=('updated', 'deleted')) 
+""" 
+model转json 
+:param choices: 是否自动转换choices 
+:param cls: 需要转的model 
+:param contains: 包含的字段 （若有此参数，则只返回次参数包含字段），同时作用于子model与父model
+:param excepts: 排除字段，默认排除更新时间与deleted  （若有此参数，则排除此参数内的字段），同时作用于子model与父model
+:return: json
+""" 
+```
 
-
-#### 实现models转dict <br>
-#### 支持了时间格式转化, foreignKey, choice类型转义 <br>
+#### 实现models转dict 
+#### 支持了时间格式转化, foreignKey, choice类型转义 
 #### 暂不支持ManyToOne ManyToMany
 #### 未保证序列化的执行效率，减少外键带来的SQL查询，需要获取ForeignKey的内容，请使用select_related()方法，若不使用，则会返回ForeignKey的值
 
