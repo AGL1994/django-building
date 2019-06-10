@@ -2,9 +2,9 @@ django-building
 ===============
 1. Add "building" to your INSTALLED_APPS setting like this::
 
-    INSTALLED_APPS = [
-        ...
-        'building',
+    INSTALLED_APPS = [ <br>
+        ... <br>
+        'building', <br>
     ]
 
 model序列化
