@@ -101,47 +101,49 @@ class UserWx(models.Model):
     return JsonResponse(result_content(status='success', content=user_wx_dict), status=HTTP_200_OK)
 ```
 #### 返回2
-    ```
-    {
-        "status": "success",
-        "msg": "",
-        "content": [
-            {
+```Json
+{
+    "status": "success",
+    "msg": "",
+    "content": [
+        {
+            "id": 1,
+            "user": { // 使用了select_related(), 返回了user的详细信息
                 "id": 1,
-                "user": { // 使用了select_related(), 返回了user的详细信息
-                    "id": 1,
-                    "last_login": "2019-05-07 18:22:43",
-                    "is_superuser": true,
-                    "username": "admin",
-                    "first_name": "",
-                    "last_name": "",
-                    "email": "45612345@qq.com",
-                    "is_staff": true,
-                    "is_active": true,
-                    "date_joined": "2018-06-08 16:24:54",
-                    "name": "李小龙",
-                    "sex": 1, // 使用choices=False, 阻止自动传换值
-                    "birthday": "2018-11-19",
-                    "avatar": "",
-                    "status": 1,
-                    "created": "2018-06-08 16:24:54",
-                    "updated": "2018-06-08 16:24:54",
-                    "deleted": ""
-                },
-                "openid": "test123456",
-                "nickname": "测试微信昵称",
-                "sex": 1,
-                "province": "四川",
-                "city": "成都",
-                "country": "中国",
-                "head_img_url": "image",
-                "privilege": "1",
-                "created": "2019-06-10 15:50:18",
-                "updated": "2019-06-10 15:50:24",
+                "last_login": "2019-05-07 18:22:43",
+                "is_superuser": true,
+                "username": "admin",
+                "first_name": "",
+                "last_name": "",
+                "email": "45612345@qq.com",
+                "is_staff": true,
+                "is_active": true,
+                "date_joined": "2018-06-08 16:24:54",
+                "name": "李小龙",
+                "sex": 1, // 使用choices=False, 阻止自动传换值
+                "birthday": "2018-11-19",
+                "avatar": "",
+                "status": 1,
+                "created": "2018-06-08 16:24:54",
+                "updated": "2018-06-08 16:24:54",
                 "deleted": ""
-            }
-        ]
-    }
-    ```
+            },
+            "openid": "test123456",
+            "nickname": "测试微信昵称",
+            "sex": 1,
+            "province": "四川",
+            "city": "成都",
+            "country": "中国",
+            "head_img_url": "image",
+            "privilege": "1",
+            "created": "2019-06-10 15:50:18",
+            "updated": "2019-06-10 15:50:24",
+            "deleted": ""
+        }
+    ]
+}
+```
+二. 快捷查询分页（待续）
+----------
 
     
