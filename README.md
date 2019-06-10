@@ -11,23 +11,23 @@ django-building
 ### 功能介绍
 一. model序列化
 ----------
-    model_serializer(cls, choices=True, contains=(), excepts=('updated', 'deleted')) <br>
-    """ <br>
-    model转json <br>
-    :param choices: 是否自动转换choices <br>
-    :param cls: 需要转的model <br>
-    :param contains: 包含的字段 （若有此参数，则只返回次参数包含字段），同时作用于子model与父model<br>
-    :param excepts: 排除字段，默认排除更新时间与deleted  （若有此参数，则排除此参数内的字段），同时作用于子model与父model<br>
-    :return: json
-    """ <br>
+model_serializer(cls, choices=True, contains=(), excepts=('updated', 'deleted')) <br>
+""" <br>
+model转json <br>
+:param choices: 是否自动转换choices <br>
+:param cls: 需要转的model <br>
+:param contains: 包含的字段 （若有此参数，则只返回次参数包含字段），同时作用于子model与父model<br>
+:param excepts: 排除字段，默认排除更新时间与deleted  （若有此参数，则排除此参数内的字段），同时作用于子model与父model<br>
+:return: json
+""" <br>
 
-    #### 实现models转dict <br>
-    #### 支持了时间格式转化, foreignKey, choice类型转义 <br>
-    #### 暂不支持ManyToOne ManyToMany
-    #### 未保证序列化的执行效率，减少外键带来的SQL查询，需要获取ForeignKey的内容，请使用select_related()方法，若不使用，则会返回ForeignKey的值
+#### 实现models转dict <br>
+#### 支持了时间格式转化, foreignKey, choice类型转义 <br>
+#### 暂不支持ManyToOne ManyToMany
+#### 未保证序列化的执行效率，减少外键带来的SQL查询，需要获取ForeignKey的内容，请使用select_related()方法，若不使用，则会返回ForeignKey的值
 
-    #### 代码示例
-    以下为测试model
+#### 代码示例
+以下为测试model
     ```
     class User(AbstractUser):
         phone = models.CharField(max_length=11, blank=True, null=True, verbose_name="电话号码")
@@ -63,14 +63,14 @@ django-building
             verbose_name = '用户微信信息'
             db_table = 'tb_user_wx'
     ```
-    ### model_serializer使用
-    1. 用法1
+### model_serializer使用
+1. 用法1
     ```
     user_wx = UserWx.objects.all()
     user_wx_dict = model_serializer(user_wx)
     return JsonResponse(result_content(status='success', content=user_wx_dict), status=HTTP_200_OK)
     ```
-    以下为返回数据
+以下为返回数据
     ```
     {
         "status": "success",
@@ -92,13 +92,13 @@ django-building
         ]
     }
     ```
-    2. 用法2
+2. 用法2
     ```
     user_wx = UserWx.objects.select_related('user').all()
     user_wx_dict = model_serializer(user_wx, choices=False, excepts=('password', 'phone'))  # 不显示密码和手机号
     return JsonResponse(result_content(status='success', content=user_wx_dict), status=HTTP_200_OK)
     ```
-    以下为返回数据
+以下为返回数据
     ```
     {
         "status": "success",
