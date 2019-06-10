@@ -66,41 +66,41 @@ class UserWx(models.Model):
         db_table = 'tb_user_wx'
 ```
 ### model_serializer使用
-1. 用法1
-    ```Python
+#### 用法1
+```Python
     user_wx = UserWx.objects.all()
     user_wx_dict = model_serializer(user_wx)
     return JsonResponse(result_content(status='success', content=user_wx_dict), status=HTTP_200_OK)
-    ```
-以下为返回数据
-    ```Json
-    {
-        "status": "success",
-        "msg": "",
-        "content": [
-            {
-                "id": 1,
-                "user": 1,  // 未使用select_related()，返回的字段值
-                "openid": "test123456",
-                "nickname": "测试微信昵称",
-                "sex": "男", // 默认会转换choice的值
-                "province": "四川",
-                "city": "成都",
-                "country": "中国",
-                "head_img_url": "image",
-                "privilege": "1",
-                "created": "2019-06-10 15:50:18"
-            }
-        ]
-    }
-    ```
-2. 用法2
-    ```
+```
+#### 返回1
+```Json
+{
+    "status": "success",
+    "msg": "",
+    "content": [
+        {
+            "id": 1,
+            "user": 1,  // 未使用select_related()，返回的字段值
+            "openid": "test123456",
+            "nickname": "测试微信昵称",
+            "sex": "男", // 默认会转换choice的值
+            "province": "四川",
+            "city": "成都",
+            "country": "中国",
+            "head_img_url": "image",
+            "privilege": "1",
+            "created": "2019-06-10 15:50:18"
+        }
+    ]
+}
+```
+#### 用法2
+```Python
     user_wx = UserWx.objects.select_related('user').all()
     user_wx_dict = model_serializer(user_wx, choices=False, excepts=('password', 'phone'))  # 不显示密码和手机号
     return JsonResponse(result_content(status='success', content=user_wx_dict), status=HTTP_200_OK)
-    ```
-以下为返回数据
+```
+#### 返回2
     ```
     {
         "status": "success",
