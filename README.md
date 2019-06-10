@@ -70,6 +70,7 @@ django-building
     user_wx_dict = model_serializer(user_wx)
     return JsonResponse(result_content(status='success', content=user_wx_dict), status=HTTP_200_OK)
     ```
+    以下为返回数据
     ```
     {
         "status": "success",
@@ -97,7 +98,7 @@ django-building
     user_wx_dict = model_serializer(user_wx, choices=False, excepts=('password', 'phone'))  # 不显示密码和手机号
     return JsonResponse(result_content(status='success', content=user_wx_dict), status=HTTP_200_OK)
     ```
-
+    以下为返回数据
     ```
     {
         "status": "success",
