@@ -1,5 +1,6 @@
 django-building
 ===============
+### 开始使用
 1. Add "building" to your INSTALLED_APPS setting like this::
     ```
     INSTALLED_APPS = [
@@ -27,21 +28,21 @@ model序列化
     ### 代码示例
     ```
     class User(AbstractUser):
-    phone = models.CharField(max_length=11, blank=True, null=True, verbose_name="电话号码")
-    name = models.CharField(max_length=45, blank=True, null=True, verbose_name="姓名")
-    sex = models.IntegerField(blank=True, null=True, choices=((1, "男"), (2, '女')), default=1)
-    birthday = models.DateField(blank=True, null=True, verbose_name="出生日期")
-    avatar = models.CharField(max_length=255, default=None, blank=True, null=True, verbose_name="用户头像")
-    status = models.SmallIntegerField(default=1, choices=USER_STATUS, verbose_name="状态")
-    created = models.DateTimeField(verbose_name=u"创建时间", editable=False, auto_now_add=True)
-    updated = models.DateTimeField(verbose_name=u"修改时间", editable=False, auto_now=True)
-    deleted = models.SmallIntegerField(default=0)
+        phone = models.CharField(max_length=11, blank=True, null=True, verbose_name="电话号码")
+        name = models.CharField(max_length=45, blank=True, null=True, verbose_name="姓名")
+        sex = models.IntegerField(blank=True, null=True, choices=((1, "男"), (2, '女')), default=1)
+        birthday = models.DateField(blank=True, null=True, verbose_name="出生日期")
+        avatar = models.CharField(max_length=255, default=None, blank=True, null=True, verbose_name="用户头像")
+        status = models.SmallIntegerField(default=1, choices=USER_STATUS, verbose_name="状态")
+        created = models.DateTimeField(verbose_name=u"创建时间", editable=False, auto_now_add=True)
+        updated = models.DateTimeField(verbose_name=u"修改时间", editable=False, auto_now=True)
+        deleted = models.SmallIntegerField(default=0)
 
-    class Meta:
-        #managed = True
-        db_table = 'tb_user'
-        verbose_name = "用户信息"
-        verbose_name_plural = verbose_name
+        class Meta:
+            #managed = True
+            db_table = 'tb_user'
+            verbose_name = "用户信息"
+            verbose_name_plural = verbose_name
     ```
 
     
