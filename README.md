@@ -30,41 +30,41 @@ model转json
 
 #### 代码示例
 ##### 以下为测试model
-    ```Python
-    class User(AbstractUser):
-        phone = models.CharField(max_length=11, blank=True, null=True, verbose_name="电话号码")
-        name = models.CharField(max_length=45, blank=True, null=True, verbose_name="姓名")
-        sex = models.IntegerField(blank=True, null=True, choices=((1, "男"), (2, '女')), default=1)
-        birthday = models.DateField(blank=True, null=True, verbose_name="出生日期")
-        avatar = models.CharField(max_length=255, default=None, blank=True, null=True, verbose_name="用户头像")
-        status = models.SmallIntegerField(default=1, choices=USER_STATUS, verbose_name="状态")
-        created = models.DateTimeField(verbose_name=u"创建时间", editable=False, auto_now_add=True)
-        updated = models.DateTimeField(verbose_name=u"修改时间", editable=False, auto_now=True)
-        deleted = models.SmallIntegerField(default=0)
+```
+class User(AbstractUser):
+    phone = models.CharField(max_length=11, blank=True, null=True, verbose_name="电话号码")
+    name = models.CharField(max_length=45, blank=True, null=True, verbose_name="姓名")
+    sex = models.IntegerField(blank=True, null=True, choices=((1, "男"), (2, '女')), default=1)
+    birthday = models.DateField(blank=True, null=True, verbose_name="出生日期")
+    avatar = models.CharField(max_length=255, default=None, blank=True, null=True, verbose_name="用户头像")
+    status = models.SmallIntegerField(default=1, choices=USER_STATUS, verbose_name="状态")
+    created = models.DateTimeField(verbose_name=u"创建时间", editable=False, auto_now_add=True)
+    updated = models.DateTimeField(verbose_name=u"修改时间", editable=False, auto_now=True)
+    deleted = models.SmallIntegerField(default=0)
 
-        class Meta:
-            db_table = 'tb_user'
-            verbose_name = "用户信息"
-            verbose_name_plural = verbose_name
+    class Meta:
+        db_table = 'tb_user'
+        verbose_name = "用户信息"
+        verbose_name_plural = verbose_name
 
-    class UserWx(models.Model):
-        user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, blank=True)
-        openid = models.CharField(max_length=50, verbose_name='openid')
-        nickname = models.CharField(max_length=255, verbose_name='用户昵称')
-        sex = models.IntegerField(choices=USER_SEX, verbose_name='性别')
-        province = models.CharField(max_length=255, verbose_name='省份')
-        city = models.CharField(max_length=255, verbose_name='城市')
-        country = models.CharField(max_length=255, verbose_name='国家')
-        head_img_url = models.CharField(max_length=500, verbose_name='用户头像url')
-        privilege = models.CharField(max_length=1000, verbose_name='用户特权信息')
-        created = models.DateTimeField(verbose_name=u"创建时间", editable=False, auto_now_add=True)
-        updated = models.DateTimeField(verbose_name=u"修改时间", editable=False, auto_now=True)
-        deleted = models.SmallIntegerField(default=0)
+class UserWx(models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, blank=True)
+    openid = models.CharField(max_length=50, verbose_name='openid')
+    nickname = models.CharField(max_length=255, verbose_name='用户昵称')
+    sex = models.IntegerField(choices=USER_SEX, verbose_name='性别')
+    province = models.CharField(max_length=255, verbose_name='省份')
+    city = models.CharField(max_length=255, verbose_name='城市')
+    country = models.CharField(max_length=255, verbose_name='国家')
+    head_img_url = models.CharField(max_length=500, verbose_name='用户头像url')
+    privilege = models.CharField(max_length=1000, verbose_name='用户特权信息')
+    created = models.DateTimeField(verbose_name=u"创建时间", editable=False, auto_now_add=True)
+    updated = models.DateTimeField(verbose_name=u"修改时间", editable=False, auto_now=True)
+    deleted = models.SmallIntegerField(default=0)
 
-        class Meta:
-            verbose_name = '用户微信信息'
-            db_table = 'tb_user_wx'
-    ```
+    class Meta:
+        verbose_name = '用户微信信息'
+        db_table = 'tb_user_wx'
+```
 ### model_serializer使用
 1. 用法1
     ```Python
