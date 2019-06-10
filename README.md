@@ -11,7 +11,7 @@ django-building
 ### 功能介绍
 一. model序列化
 ----------
-```
+```Python
 model_serializer(cls, choices=True, contains=(), excepts=('updated', 'deleted')) 
 """ 
 model转json 
@@ -30,7 +30,7 @@ model转json
 
 #### 代码示例
 以下为测试model
-    ```
+    ```Python
     class User(AbstractUser):
         phone = models.CharField(max_length=11, blank=True, null=True, verbose_name="电话号码")
         name = models.CharField(max_length=45, blank=True, null=True, verbose_name="姓名")
@@ -67,13 +67,13 @@ model转json
     ```
 ### model_serializer使用
 1. 用法1
-    ```
+    ```Python
     user_wx = UserWx.objects.all()
     user_wx_dict = model_serializer(user_wx)
     return JsonResponse(result_content(status='success', content=user_wx_dict), status=HTTP_200_OK)
     ```
 以下为返回数据
-    ```
+    ```Json
     {
         "status": "success",
         "msg": "",
