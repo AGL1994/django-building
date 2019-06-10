@@ -1,11 +1,3 @@
-=====
-Building
-=====
-
-Building基于
-
-Quick start
------------
 
 1. Add "polls" to your INSTALLED_APPS setting like this::
 

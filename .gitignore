@@ -1,0 +1,8 @@
+dist/django-building-0.0.1.tar.gz
+dist/django_building-0.0.1-py3-none-any.whl
+django_building.egg-info/PKG-INFO
+django_building.egg-info/SOURCES.txt
+django_building.egg-info/dependency_links.txt
+django_building.egg-info/top_level.txt
+dist/*
+build/*
