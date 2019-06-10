@@ -44,5 +44,3 @@ model序列化
             verbose_name = "用户信息"
             verbose_name_plural = verbose_name
     ```
-
-    
