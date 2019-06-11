@@ -1,15 +1,26 @@
 django-building
 ===============
 ### 开始使用
-1. 添加 "building" 到settings的INSTALLED_APPS中::
-    ```
+1. 安装::
+```
+
+```
+2. 添加 "building" 到settings的INSTALLED_APPS中::
+```
     INSTALLED_APPS = [
         ...
         'building',
     ]
-    ```
+```
+### 功能列表
+    1. model序列化
+    2. 快捷查询分页功能
+    3. 日志（文档待更新）
+    4. 自动化文档（文档待更新）
+    5. 权限（文档待更新）
 ### 功能介绍
 一. model序列化
+公司项目最开始使用的非前后端分离的方式，由于业务需求页面完全重做并采用前后端分离的方式，项目迎来了一次重构。最开始选用技术的时候看重了drf，但是由于项目本身已经完成，只需要改动部分业务需求与接口返回，drf的序列化需要对每个model写一个serializers，对于我们来说工作量有点大了（项目有近100个model）。故自己封装了一个序列化功能，以下为相关示例。如果查询数据量很大，不推荐此方法。因为方法使用了反射、循环与递归（特别是需要查询外键值或外键的外键值时），性能上显得不佳。<br>
 ----------
 ```Python
 model_serializer(cls, choices=True, contains=(), excepts=('updated', 'deleted')) 
@@ -19,7 +30,7 @@ model转json
 :param cls: 需要转的model 
 :param contains: 包含的字段 （若有此参数，则只返回次参数包含字段），同时作用于子model与父model
 :param excepts: 排除字段，默认排除更新时间与deleted  （若有此参数，则排除此参数内的字段），同时作用于子model与父model
-:return: json
+:return: list(dict)
 """ 
 ```
 
@@ -68,6 +79,7 @@ class UserWx(models.Model):
 ### model_serializer使用
 #### 用法1
 ```Python
+    from building.status import result_content, HTTP_200_OK
     user_wx = UserWx.objects.all()
     user_wx_dict = model_serializer(user_wx)
     return JsonResponse(result_content(status='success', content=user_wx_dict), status=HTTP_200_OK)
@@ -96,6 +108,7 @@ class UserWx(models.Model):
 ```
 #### 用法2
 ```Python
+    from building.status import result_content, HTTP_200_OK
     user_wx = UserWx.objects.select_related('user').all()
     user_wx_dict = model_serializer(user_wx, choices=False, excepts=('password', 'phone'))  # 不显示密码和手机号
     return JsonResponse(result_content(status='success', content=user_wx_dict), status=HTTP_200_OK)
@@ -145,5 +158,134 @@ class UserWx(models.Model):
 ```
 二. 快捷查询分页（待续）
 ----------
+在实际的项目中，我们通常会有许许多多的查询功能，尤其是在后台管理系统中，会有大量的表格与条件查询。我们需要对大量的查询条件做数据验证与查询映射，烦不胜烦。所以，针对这种重复性的工作，博主封装了以下方法。主要思路，将前台查询条件的name值直接命名为filter()所需要的查询条件。<br>
+#### 装饰器参数说明
+```
+def request_aider(filter_list=(), choices=True, contains=(), excepts=('updated', 'deleted')):
+    """
+    过去过滤的查询条件，自动分页与序列化
+    :param choices: 同 model_serializer
+    :param foreign: 同 model_serializer
+    :param contains: 同 model_serializer
+    :param excepts: 同 model_serializer
+    :param filter_list: 过滤查询条件请求
+    :return:
+    """
+```
+#### 快捷分页查询功能通过装饰器实现
+```Python
+@request_aider(excepts=('phone', ))
+def user_list_view(request, params):
+
+    self_query = {
+        'deleted': 0,
+        'user__deleted': 0
+    }
+    user_wx = UserWx.objects.select_related('user').filter(**self_query, **params)
+    return user_wx  # 直接返回查询结果即可
+```
+#### 请求参数
+```
+int__user__sex: 2
+user__name: '李小龙'
+user__nickname__contains: '测试'
+nun: 10 // 分页数据，每页显示数据，默认为10
+page: 1 // 分页数据，当前页码，默认为1
+```
+##### 参数说明：
+    1. 前缀为数据类型，目前支持 int__, float__, date__, datetime__, string__(默认，字符串可不写)
+    2. 后部分为model查询条件
+    3. num, page 可不填
+    4. filter_list作用，以上可知，我们直接采用前台参数的name值作为数据查询条件，某些参数并不会作为查询条件，比如分页数据(num, page)，获取安全验证(csrfmiddlewaretoken)，我们可使用filter_list 来排除它们。（默认排除了 num, page, csrfmiddlewaretoken三个字段）
+##### 返回数据
+```Json
+{
+    "status": "success",
+    "msg": "",
+    "content": {
+        "num": 2, // 当前每页显示数量
+        "page": 1, // 当前页码
+        "total_page": 2, // 总页码
+        "has_next": true, // 是否有上一页
+        "has_prev": false, // 是否有下一页
+        "total": 3, // 总条数
+        "data": [
+            {
+                "id": 2,
+                "user": {
+                    "id": 56,
+                    "password": "pbkdf2_sha256$100000$OzZ0A14PTn6P$fAYCOCUJyiK5y6puLVRQ47ouphWV/xCQHv6s2jTBVD4=",
+                    "last_login": "",
+                    "is_superuser": "",
+                    "username": "",
+                    "first_name": "",
+                    "last_name": "",
+                    "email": "",
+                    "is_staff": "",
+                    "is_active": true,
+                    "date_joined": "2018-07-17 13:36:11",
+                    "name": "廖辉",
+                    "sex": "女",
+                    "birthday": "1990-01-01",
+                    "avatar": "",
+                    "status": "正常",
+                    "created": "2018-07-17 13:36:11",
+                    "updated": "2018-07-17 13:36:11",
+                    "deleted": ""
+                },
+                "openid": "testffd",
+                "nickname": "测试微信昵称2",
+                "sex": "男",
+                "province": "四川",
+                "city": "成都",
+                "country": "中国",
+                "head_img_url": "image",
+                "privilege": "1",
+                "created": "2019-06-10 15:50:18",
+                "updated": "2019-06-10 15:50:24",
+                "deleted": ""
+            },
+            {
+                "id": 4,
+                "user": {
+                    "id": 69,
+                    "password": "pbkdf2_sha256$100000$PxN3kCTj8O7O$PkiQJNhhJysILZJgLzoMUZGjD6vLD9P6v+vArUJ2h6o=",
+                    "last_login": "",
+                    "is_superuser": "",
+                    "username": "",
+                    "first_name": "",
+                    "last_name": "",
+                    "email": "",
+                    "is_staff": "",
+                    "is_active": true,
+                    "date_joined": "2018-07-17 13:55:12",
+                    "name": "柠檬",
+                    "sex": "女",
+                    "birthday": "2014-08-08",
+                    "avatar": "",
+                    "status": "正常",
+                    "created": "2018-07-17 13:55:12",
+                    "updated": "2018-07-17 13:55:12",
+                    "deleted": ""
+                },
+                "openid": "testfbb",
+                "nickname": "测试微信昵称4",
+                "sex": "男",
+                "province": "四川",
+                "city": "成都",
+                "country": "中国",
+                "head_img_url": "image",
+                "privilege": "1",
+                "created": "2019-06-10 15:50:18",
+                "updated": "2019-06-10 15:50:24",
+                "deleted": ""
+            }
+        ]
+    }
+}
+```
+##### @request_aider()集成了 查询、序列化、分页功能，另分装了单独的装饰来分别实现上述功能
+###### @query_aider(filter_list=()) 查询
+###### @page_aider 分页功能
 
     
