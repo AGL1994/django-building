@@ -3,7 +3,7 @@ django-building
 ### 开始使用
 1. 安装::
 ```
-
+pip install django-building
 ```
 2. 添加 "building" 到settings的INSTALLED_APPS中::
 ```
@@ -284,7 +284,7 @@ page: 1 // 分页数据，当前页码，默认为1
     }
 }
 ```
-##### @request_aider()集成了 查询、序列化、分页功能，另分装了单独的装饰来分别实现上述功能
+###### @request_aider()集成了 查询、序列化、分页功能，另分装了单独的装饰来分别实现上述功能
 ###### @query_aider(filter_list=()) 查询
 ###### @page_aider 分页功能
 

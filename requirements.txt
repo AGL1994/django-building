@@ -1,0 +1,2 @@
+aliyun-log-python-sdk==0.6.45
+django-pure-pagination==0.3.0

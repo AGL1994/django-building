@@ -1,0 +1,1 @@
+文档参照:https://github.com/AGL1994/django-building

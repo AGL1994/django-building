@@ -8,7 +8,6 @@ from aliyun.log import LogClient, LogItem, PutLogsRequest
 LOCAL_LOG = 1
 SERVER_LOG = 2
 BOTH_LOG = 3
-LOG_TYPE = BOTH_LOG
 
 
 class Log(object):
@@ -45,11 +44,11 @@ class Log(object):
         message = f'time:{log_time} file:{filename} function:{function_name} lineno:{lineno} log_type:{function} ' \
                   f'【message:{message}】'
 
-        if LOG_TYPE == LOCAL_LOG:
+        if settings.LOG_TYPE == LOCAL_LOG:
             log_function = getattr(self.logger, function)
             log_function(message)
 
-        elif LOG_TYPE == SERVER_LOG:
+        elif settings.LOG_TYPE == SERVER_LOG:
             send_log_to_aliyun(self.location, message)
         else:
             log_function = getattr(self.logger, function)
