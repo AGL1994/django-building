@@ -425,6 +425,16 @@ def get(self, request, school_id, params, data_permission=None):
     }
     """
 ```
+##### url配置
+配置文档地址，访问 localhost:8000/doc，即可返回文档数据
+```
+from building.views import doc_view
+urlpatterns = [
+    ......
+    path('doc', doc_view),
+
+]
+```
 ##### 接口返回数据示例
 ```Json
 {
